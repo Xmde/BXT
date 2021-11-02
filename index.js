@@ -60,5 +60,6 @@ client.on('ready', () => {
 });
 
 require('./database/init')();
+//Setup Notificaitons Module
 require('./modules/uploadNotifications/init')(client);
 client.login(config.get('BotToken'));
