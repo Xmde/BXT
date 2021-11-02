@@ -59,6 +59,4 @@ client.on('ready', () => {
   console.log('Bot Ready!');
 });
 
-require('./database/init')();
-require('./modules/uploadNotifications/init')(client);
 client.login(config.get('BotToken'));

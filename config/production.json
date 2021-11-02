@@ -1,7 +1,4 @@
 {
   "BotToken": "",
-  "ClientId": "",
-  "db": "",
-  "TwitchClientSecret": "",
-  "TwitchClientId": ""
+  "ClientId": ""
 }
