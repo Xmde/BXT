@@ -9,7 +9,7 @@ module.exports = {
     .setDescription('Help Command'),
   help: 'this',
   useage: '/help',
-  async execute(interaction, _) {
+  async execute(interaction) {
     //Creates the embed message to send to user
     const helpEmbed = new MessageEmbed()
       .setColor('#b31d45')

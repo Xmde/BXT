@@ -1,4 +1,8 @@
-if (process.env.NODE_ENV === 'production') require('dotenv').config();
+if (process.env.NODE_ENV === 'production') {
+  require('dotenv').config();
+  require('./deploy_commands').production();
+}
+
 const fs = require('fs');
 const { Client, Collection, Intents } = require('discord.js');
 const config = require('config');
@@ -14,43 +18,22 @@ const commandFiles = fs
   .readdirSync('./commands')
   .filter((file) => file.endsWith('.js'));
 
+const eventFiles = fs
+  .readdirSync('./events')
+  .filter((file) => file.endsWith('.js'));
+
 for (const file of commandFiles) {
   command = require(`./commands/${file}`);
   client.commands.set(command.data.name, command);
 }
 
-// On an interaction checks to see if it is a command.
-// If it is a command then run appropiate command.
-client.on('interactionCreate', async (interaction) => {
-  if (!interaction.isCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-
-  if (!command) return;
-
-  if (
-    command.permission &&
-    !interaction.member.permissions.has(command.permission)
-  ) {
-    interaction.reply({
-      content: 'You do not have permission to run this command!',
-      ephemeral: true,
-    });
-    return;
+for (const file of eventFiles) {
+  const event = require(`./events/${file}`);
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
   }
-  try {
-    await command.execute(interaction, client);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({
-      content: 'There was an error while executing this command!',
-      ephemeral: true,
-    });
-  }
-});
-
-client.on('ready', () => {
-  console.log('Bot Ready!');
-});
+}
 
 client.login(config.get('BotToken'));

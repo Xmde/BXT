@@ -6,8 +6,7 @@
   "scripts": {
     "prod": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
-    "devDeployCommands": "NODE_ENV=development node deploy_commands.js",
-    "deployCommands": "NODE_ENV=production node deploy_commands.js"
+    "deployCommands": "NODE_ENV=development node deploy_commands.js"
   },
   "author": "Xmde",
   "license": "ISC",

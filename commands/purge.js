@@ -14,7 +14,8 @@ module.exports = {
   help: 'Purges that last few messages',
   useage: '/purge [amount]',
   permission: 'ADMINISTRATOR',
-  async execute(interaction, client) {
+  async execute(interaction) {
+    const client = interaction.client;
     // Gets a lot of useful info to be used later on.
     const ammount = interaction.options.getInteger('amount');
     const guild = client.guilds.cache.get(interaction.guildId);

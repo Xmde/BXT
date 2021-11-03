@@ -7,7 +7,7 @@ module.exports = {
     .setDescription('Replies with Pong!'),
   help: 'Replies with Pong when sent Ping',
   useage: '/ping',
-  async execute(interaction, _) {
+  async execute(interaction) {
     await interaction.reply({
       content: `Pong!`,
       ephemeral: true,

@@ -22,7 +22,8 @@ module.exports = {
   help: 'Makes User go WHOOOOO',
   useage: '/rollercoaster [user] [time]',
   permission: 'ADMINISTRATOR',
-  async execute(interaction, client) {
+  async execute(interaction) {
+    const client = interaction.client;
     const guild = client.guilds.cache.get(interaction.guildId);
     const user = guild.members.cache.get(
       interaction.options.getUser('user').id
