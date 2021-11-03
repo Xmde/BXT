@@ -8,6 +8,6 @@ module.exports = {
     },
     watch : true,
     restart_delay: 5000,
-    log_date_format : "YYYY-MM-DD HH:mm Z"
+    log_date_format : "YYYY-MM-DDTHH:mm:ss"
   }]
 }
