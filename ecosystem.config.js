@@ -7,6 +7,7 @@ module.exports = {
        NODE_ENV: "production"
     },
     watch : true,
-    restart_delay: 5000
+    restart_delay: 5000,
+    log_date_format : "YYYY-MM-DD HH:mm Z"
   }]
 }
