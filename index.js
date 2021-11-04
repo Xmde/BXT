@@ -18,15 +18,18 @@ const commandFiles = fs
   .readdirSync('./commands')
   .filter((file) => file.endsWith('.js'));
 
+// Get att the commands for events and put them into a collection
 const eventFiles = fs
   .readdirSync('./events')
   .filter((file) => file.endsWith('.js'));
 
+// Adds commands to variable to be used later
 for (const file of commandFiles) {
   command = require(`./commands/${file}`);
   client.commands.set(command.data.name, command);
 }
 
+// Calls event scripts on event triggers
 for (const file of eventFiles) {
   const event = require(`./events/${file}`);
   if (event.once) {
@@ -36,4 +39,5 @@ for (const file of eventFiles) {
   }
 }
 
+// Starts the bot
 client.login(config.get('BotToken'));
