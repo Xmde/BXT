@@ -39,5 +39,4 @@ for (const file of eventFiles) {
   }
 }
 
-// Starts the bot
 client.login(config.get('BotToken'));
