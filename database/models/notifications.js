@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const discordChannelSchema = new mongoose.Schema({
   guildId: { type: String, required: true },
   channelId: { type: String, required: true },
+  roleId: String,
 });
 
 const notificationSchema = new mongoose.Schema({

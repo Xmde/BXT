@@ -1,4 +1,7 @@
-const { Twitch } = require('../../../database/models/notifications');
+const {
+  Twitch,
+  DiscordChannel,
+} = require('../../../database/models/notifications');
 const { getStreamsBulk } = require('./apiHandle');
 
 let oldStreams = [];
@@ -32,11 +35,22 @@ const sendNotifications = async (stream, client) => {
   const databaseInfo = await Twitch.findOne({
     notificationChannel: stream.user_login,
   });
-  databaseInfo.discordChannels.forEach((channel) => {
+  databaseInfo.discordChannels.forEach(async (channel) => {
+    const pingRole = await DiscordChannel.findOne({
+      guildId: channel.guildId,
+      channelId: channel.channelId,
+    });
+    if (!pingRole) {
+      return client.channels.cache
+        .get(channel.channelId)
+        .send(
+          `@everyone ${stream.user_name} is live on twitch! Go check our their stream!\nhttps://twitch.tv/${stream.user_login}`
+        );
+    }
     client.channels.cache
       .get(channel.channelId)
       .send(
-        `@everyone ${stream.user_name} is live on twitch! Go check our their stream!\nhttps://twitch.tv/${stream.user_login}`
+        `<@&${pingRole.roleId}> ${stream.user_name} is live on twitch! Go check our their stream!\nhttps://twitch.tv/${stream.user_login}`
       );
   });
 };

@@ -1,7 +1,10 @@
 const { youtubeEventEmmiter } = require('../../../eventEmmiters/notifications');
 const { subscribe, unsubscribe, renew } = require('./pubsubhubbub');
 const xml2js = require('xml2js');
-const { Youtube } = require('../../../database/models/notifications');
+const {
+  Youtube,
+  DiscordChannel,
+} = require('../../../database/models/notifications');
 
 require('./pubsubhubbub').init();
 
@@ -33,11 +36,22 @@ const sendNotifications = async (data, client) => {
   const databaseInfo = await Youtube.findOne({
     notificationChannel: data.feed.entry[0]['yt:channelId'],
   });
-  databaseInfo.discordChannels.forEach((channel) => {
+  databaseInfo.discordChannels.forEach(async (channel) => {
+    const pingRole = await DiscordChannel.findOne({
+      guildId: channel.guildId,
+      channelId: channel.channelId,
+    });
+    if (!pingRole) {
+      return client.channels.cache
+        .get(channel.channelId)
+        .send(
+          `@everyone ${data.feed.entry[0].author[0].name} just uploaded a YouTube video! Go check out their video!\n${data.feed.entry[0].link[0].href}`
+        );
+    }
     client.channels.cache
       .get(channel.channelId)
       .send(
-        `@everyone ${data.feed.entry[0].author[0].name} just uploaded a YouTube video! Go check out their video!\n${data.feed.entry[0].link[0].href}`
+        `<@&${pingRole.roleId}> ${data.feed.entry[0].author[0].name} just uploaded a YouTube video! Go check out their video!\n${data.feed.entry[0].link[0].href}`
       );
   });
 };
