@@ -1,4 +1,9 @@
 {
   "BotToken": "",
-  "ClientId": ""
+  "ClientId": "",
+  "db": "",
+  "TwitchClientSecret": "",
+  "TwitchClientId": "",
+  "CallBackUrl": "",
+  "CallBackUrlPort": ""
 }

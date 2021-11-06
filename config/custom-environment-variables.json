@@ -1,4 +1,9 @@
 {
   "BotToken": "BXT_botToken",
-  "ClientId": "BXT_clientId"
+  "ClientId": "BXT_clientId",
+  "db": "BXT_db",
+  "TwitchClientSecret": "BXT_twitchClientSecret",
+  "TwitchClientId": "BXT_twitchClientId",
+  "CallBackUrl": "BXT_callBackUrl",
+  "CallBackUrlPort": "BXT_callBackUrlPort"
 }
