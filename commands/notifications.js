@@ -4,6 +4,7 @@ const {
   Twitch,
   Youtube,
 } = require('../database/models/notifications');
+const { youtubeEventEmmiter } = require('../eventEmmiters/notifications');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -70,8 +71,7 @@ module.exports = {
     await interaction.deferReply();
     const action = interaction.options.data[0].name;
     const platform = interaction.options.data[0].options[0].name;
-    const channel =
-      interaction.options.data[0].options[0].options[0].value.toLowerCase();
+    const channel = interaction.options.data[0].options[0].options[0].value;
 
     if (action === 'add' && platform === 'twitch') {
       const discordChannel = new DiscordChannel({
@@ -79,10 +79,12 @@ module.exports = {
         channelId: interaction.channelId,
       });
       let twitchNotif = await Twitch.findOne({
-        notificationChannel: channel,
+        notificationChannel: channel.toLowerCase(),
       });
       if (!twitchNotif)
-        twitchNotif = new Twitch({ notificationChannel: channel });
+        twitchNotif = new Twitch({
+          notificationChannel: channel.toLowerCase(),
+        });
       if (
         !twitchNotif.discordChannels.some(
           (e) =>
@@ -116,6 +118,7 @@ module.exports = {
       )
         youtubeNotif.discordChannels.push(discordChannel);
       youtubeNotif.save();
+      youtubeEventEmmiter.emit('subscribe', channel);
       await interaction.editReply({
         content: 'Added youtube channel!',
         ephemeral: true,
@@ -123,7 +126,7 @@ module.exports = {
     }
     if (action === 'remove' && platform === 'twitch') {
       let twitchNotif = await Twitch.findOne({
-        notificationChannel: channel,
+        notificationChannel: channel.toLowerCase(),
       });
       if (!twitchNotif)
         return await interaction.editReply({

@@ -28,7 +28,7 @@ async function getNewStreams() {
 }
 
 const sendNotifications = async (stream, client) => {
-  console.log(stream);
+  //console.log(stream);
   const databaseInfo = await Twitch.findOne({
     notificationChannel: stream.user_login,
   });
