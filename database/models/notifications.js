@@ -1,3 +1,4 @@
+//Sets up database structure for notications
 const mongoose = require('mongoose');
 
 const discordChannelSchema = new mongoose.Schema({

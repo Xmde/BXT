@@ -1,3 +1,4 @@
+//API Handle for Twitch
 const TwitchApi = require('node-twitch').default;
 const config = require('config');
 
