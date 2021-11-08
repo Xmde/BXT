@@ -3,8 +3,9 @@ if (process.env.NODE_ENV === 'production') {
   require('./deploy_commands').production();
 }
 import fs from 'fs';
-import { Client, Collection, Intents } from 'discord.js';
+import { Client, Intents } from 'discord.js';
 import path from 'path';
+import Collection from '@discordjs/collection';
 
 const client = new Client({
   intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_VOICE_STATES],
